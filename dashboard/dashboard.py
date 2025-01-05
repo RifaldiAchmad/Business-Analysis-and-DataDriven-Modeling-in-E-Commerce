@@ -4,7 +4,7 @@ import seaborn as sns
 import numpy as np
 import streamlit as st
 
-sns.set(style="darkgrid")
+sns.set(style="whitegrid")
 
 # Load dataset
 best_seller = pd.read_csv('https://raw.githubusercontent.com/RifaldiAchmad/Data-Analysis-and-Visualization/refs/heads/main/data/best_seller.csv')
@@ -106,14 +106,42 @@ st.line_chart(monthly_data)
 
 st.header("Top 10 Cities by Orders")
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.barplot(x='order_id', y='customer_city', data=city_order_counts, palette='coolwarm', ax=ax)
+colors = sns.color_palette("cool", len(city_order_counts))  # Gradasi dari ungu ke biru
+sns.barplot(
+    x='order_id',
+    y='customer_city',
+    data=city_order_counts,
+    palette=colors,  # Menggunakan gradasi warna ungu ke biru
+    ax=ax
+)
 ax.set_xlabel(" ")
 ax.set_ylabel(" ")
+# Remove the background and only display vertical lines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.grid(axis='x', color='lightgray', linestyle='--', linewidth=0.5)
+ax.grid(axis='y', visible=False)
 st.pyplot(fig)
 
 st.header("Customer Segmentation")
 fig, ax = plt.subplots(figsize=(10, 6))
-sns.barplot(x="customer_id", y="customer_segment", data=customer_segment_df, palette="viridis", ax=ax)
+colors = sns.color_palette("cool", len(customer_segment_df))  # Gradasi dari ungu ke biru
+sns.barplot(
+    x="customer_id",
+    y="customer_segment",
+    data=customer_segment_df,
+    palette=colors,  # Menggunakan gradasi warna ungu ke biru
+    ax=ax
+)
 ax.set_xlabel(" ")
 ax.set_ylabel(" ")
+# Remove the background and only display vertical lines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.grid(axis='x', color='lightgray', linestyle='--', linewidth=0.5)
+ax.grid(axis='y', visible=False)
 st.pyplot(fig)
