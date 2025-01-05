@@ -3,7 +3,7 @@ import numpy as np
 import streamlit as st
 
 # Load dataset
-best_seller = pd.read_csv('https://raw.githubusercontent.com/RifaldiAchmad/Data-Analysis-and-Visualization/refs/heads/main/data/best_seller.csv')
+best_seller = pd.read_csv('https://raw.githubusercontent.com/RifaldiAchmad/Data-Analysis-and-Visualization/refs/heads/main/dashboard/best_seller.csv')
 
 # Convert datetime column to datetime type
 best_seller['order_purchase_timestamp'] = pd.to_datetime(best_seller['order_purchase_timestamp'])
