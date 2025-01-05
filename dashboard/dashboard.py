@@ -7,7 +7,7 @@ import streamlit as st
 sns.set(style="darkgrid")
 
 # Load dataset
-best_seller = pd.read_excel('C:/Users/lenovo/Downloads/Proyek Analisis Data/best_seller.xlsx')
+best_seller = pd.read_excel('https://raw.githubusercontent.com/RifaldiAchmad/Data-Analysis-and-Visualization/refs/heads/main/data/best_seller.csv')
 
 # Convert datetime column to datetime type
 best_seller['order_purchase_timestamp'] = pd.to_datetime(best_seller['order_purchase_timestamp'])
