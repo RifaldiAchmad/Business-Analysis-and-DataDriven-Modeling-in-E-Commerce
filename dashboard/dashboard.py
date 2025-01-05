@@ -1,23 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
 import streamlit as st
-
-# Mengubah background color menjadi putih
-st.markdown("""
-    <style>
-    body {
-        background-color: #FFFFFF;  /* Warna latar belakang putih */
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Streamlit Content
-st.title("Dashboard with White Background")
-st.write("This is a Streamlit app with a white background.")
-
-sns.set(style="whitegrid")
 
 # Load dataset
 best_seller = pd.read_csv('https://raw.githubusercontent.com/RifaldiAchmad/Data-Analysis-and-Visualization/refs/heads/main/data/best_seller.csv')
@@ -81,11 +64,6 @@ def create_customer_segment_df(rfm_df):
         "High value customer", "Top customers"])
     return customer_segment_df
 
-monthly_data = create_monthly_data(best_seller)
-city_order_counts = create_city_order_counts(best_seller)
-rfm_df = create_rfm_df(best_seller)
-customer_segment_df = create_customer_segment_df(rfm_df)
-
 # Streamlit App
 st.title("Best Seller Dashboard")
 
@@ -104,7 +82,7 @@ selected_categories = st.sidebar.multiselect(
 # Filter data based on selected categories and date range
 filtered_best_seller = best_seller[
     (best_seller['order_purchase_timestamp'].dt.date >= start_date) & 
-    (best_seller['order_purchase_timestamp'].dt.date <= end_date) &
+    (best_seller['order_purchase_timestamp'].dt.date <= end_date) & 
     (best_seller['product_category_name_english'].isin(selected_categories))
 ]
 
@@ -114,47 +92,16 @@ city_order_counts = create_city_order_counts(filtered_best_seller)
 rfm_df = create_rfm_df(filtered_best_seller)
 customer_segment_df = create_customer_segment_df(rfm_df)
 
+# Monthly Performance of Top Category
 st.header("Monthly Performance of Top Category")
-st.line_chart(monthly_data)
+st.line_chart(monthly_data['total_sales'])
 
+# Top 10 Cities by Orders (Urutkan dari yang terbesar ke terkecil)
 st.header("Top 10 Cities by Orders")
-fig, ax = plt.subplots(figsize=(10, 6))
-colors = sns.color_palette("cool", len(city_order_counts))  # Gradasi dari ungu ke biru
-sns.barplot(
-    x='order_id',
-    y='customer_city',
-    data=city_order_counts,
-    palette=colors,  # Menggunakan gradasi warna ungu ke biru
-    ax=ax
-)
-ax.set_xlabel(" ")
-ax.set_ylabel(" ")
-# Remove the background and only display vertical lines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-ax.spines['left'].set_visible(False)
-ax.spines['bottom'].set_visible(False)
-ax.grid(axis='x', color='lightgray', linestyle='--', linewidth=0.5)
-ax.grid(axis='y', visible=False)
-st.pyplot(fig)
+city_order_counts_sorted = city_order_counts.sort_values(by='order_id', ascending=False)
+st.bar_chart(city_order_counts_sorted.set_index('customer_city')['order_id'])
 
+# Customer Segmentation (Vertical Bar Chart, urutkan dari yang terbesar ke terkecil)
 st.header("Customer Segmentation")
-fig, ax = plt.subplots(figsize=(10, 6))
-colors = sns.color_palette("cool", len(customer_segment_df))  # Gradasi dari ungu ke biru
-sns.barplot(
-    x="customer_id",
-    y="customer_segment",
-    data=customer_segment_df,
-    palette=colors,  # Menggunakan gradasi warna ungu ke biru
-    ax=ax
-)
-ax.set_xlabel(" ")
-ax.set_ylabel(" ")
-# Remove the background and only display vertical lines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-ax.spines['left'].set_visible(False)
-ax.spines['bottom'].set_visible(False)
-ax.grid(axis='x', color='lightgray', linestyle='--', linewidth=0.5)
-ax.grid(axis='y', visible=False)
-st.pyplot(fig)
+customer_segment_df_sorted = customer_segment_df.sort_values(by='customer_id', ascending=False)
+st.bar_chart(customer_segment_df_sorted.set_index('customer_segment')['customer_id'])
