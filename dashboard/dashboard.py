@@ -4,6 +4,19 @@ import seaborn as sns
 import numpy as np
 import streamlit as st
 
+# Mengubah background color menjadi putih
+st.markdown("""
+    <style>
+    body {
+        background-color: #FFFFFF;  /* Warna latar belakang putih */
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Streamlit Content
+st.title("Dashboard with White Background")
+st.write("This is a Streamlit app with a white background.")
+
 sns.set(style="whitegrid")
 
 # Load dataset
